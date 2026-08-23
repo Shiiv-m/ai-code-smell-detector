@@ -5,7 +5,8 @@
   "main": "src/background/background.js",
   "scripts": {
     "watch": "webpack --watch --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "zip": "zip -r extension.zip dist/"
   },
   "dependencies": {
     "dotenv": "^16.3.1"

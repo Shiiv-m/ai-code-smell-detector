@@ -37,14 +37,24 @@ function initializeButtons() {
     const analyzeBtn = document.getElementById('analyzeBtn');
     const copyBtn = document.getElementById('copyBtn');
     const generateFixBtn = document.getElementById('generateFixBtn');
-    const securityTestBtn = document.getElementById('securityTestBtn');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    const onboardingBanner = document.getElementById('onboardingBanner');
     
     analyzeBtn.addEventListener('click', analyzeCode);
     copyBtn.addEventListener('click', copyAnalysis);
     generateFixBtn.addEventListener('click', generateFix);
-    securityTestBtn.addEventListener('click', runSecurityTest);
     clearHistoryBtn.addEventListener('click', clearHistory);
+    
+    // Redirect onboarding clicks to Settings tab
+    onboardingBanner.addEventListener('click', () => {
+        document.querySelector('[data-tab="settings"]').click();
+    });
+    onboardingBanner.addEventListener('mouseenter', () => {
+        onboardingBanner.style.background = 'rgba(59, 130, 246, 0.15)';
+    });
+    onboardingBanner.addEventListener('mouseleave', () => {
+        onboardingBanner.style.background = 'rgba(59, 130, 246, 0.08)';
+    });
     
     // Enter key to analyze
     document.getElementById('codeInput').addEventListener('keydown', (e) => {
@@ -127,131 +137,7 @@ function generateFix() {
     }
 }
 
-// ==================== SECURITY TEST ====================
-async function runSecurityTest() {
-    showLoading(true);
-    hideResults();
-    hideError();
-    
-    // Clear previous security results
-    document.getElementById('securityResults').classList.add('hidden');
-    document.getElementById('securityOutput').textContent = '';
-    
-    try {
-        const checks = getSelectedSecurityChecks();
-        
-        if (checks.length === 0) {
-            showError('Please select at least one security check');
-            showLoading(false);
-            return;
-        }
-        
-        // Query the active tab
-        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        if (!tab) {
-            showError('Could not find active browser tab.');
-            showLoading(false);
-            return;
-        }
-        
-        // Handle restricted system URLs
-        const restrictedProtocols = ['chrome:', 'chrome-extension:', 'edge:', 'about:', 'devtools:'];
-        if (restrictedProtocols.some(p => tab.url.startsWith(p))) {
-            showError('Security testing cannot be performed on browser internal pages. Please visit a standard website.');
-            showLoading(false);
-            return;
-        }
-        
-        // Inject script to extract DOM data
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            func: () => {
-                const forms = Array.from(document.forms).map(form => {
-                    const inputs = Array.from(form.elements).map(el => ({
-                        type: el.type || '',
-                        name: el.name || '',
-                        id: el.id || '',
-                        placeholder: el.placeholder || ''
-                    }));
-                    return {
-                        action: form.action || '',
-                        method: form.method || 'get',
-                        inputs: inputs
-                    };
-                });
-                
-                const scripts = Array.from(document.scripts)
-                    .filter(s => s.src || s.innerHTML)
-                    .map(s => ({
-                        src: s.src || '',
-                        content: s.src ? '' : s.innerHTML.substring(0, 500)
-                    }));
-                    
-                const metas = Array.from(document.getElementsByTagName('meta')).map(m => ({
-                    name: m.getAttribute('name') || '',
-                    httpEquiv: m.getAttribute('http-equiv') || '',
-                    content: m.getAttribute('content') || ''
-                }));
-                
-                return {
-                    url: window.location.href,
-                    protocol: window.location.protocol,
-                    forms: forms,
-                    scripts: scripts,
-                    metas: metas
-                };
-            }
-        }, (results) => {
-            if (chrome.runtime.lastError || !results || !results[0]) {
-                const errMsg = (chrome.runtime.lastError && chrome.runtime.lastError.message) || 'Failed to extract website data.';
-                showError(`Script injection blocked: ${errMsg}`);
-                showLoading(false);
-                return;
-            }
-            
-            const domData = results[0].result;
-            
-            // Send message to background service worker
-            chrome.runtime.sendMessage({
-                action: 'runSecurityScan',
-                domData: domData,
-                checks: checks
-            }, (response) => {
-                showLoading(false);
-                
-                if (response && response.success) {
-                    displaySecurityResults(response.data);
-                } else {
-                    showError((response && response.error) || 'Security scan failed.');
-                }
-            });
-        });
-        
-    } catch (error) {
-        showLoading(false);
-        showError(error.message);
-    }
-}
 
-function displaySecurityResults(result) {
-    const output = document.getElementById('securityOutput');
-    output.textContent = result;
-    document.getElementById('securityResults').classList.remove('hidden');
-}
-
-function getSelectedSecurityChecks() {
-    const checkboxes = document.querySelectorAll('.security-checks input[type="checkbox"]:checked');
-    return Array.from(checkboxes).map(cb => {
-        // Map UI text to short check identifiers
-        const label = cb.parentElement.textContent.trim();
-        if (label.includes('XSS')) return 'xss';
-        if (label.includes('SQL')) return 'sqli';
-        if (label.includes('CSRF')) return 'csrf';
-        if (label.includes('CSP')) return 'csp';
-        if (label.includes('Dependencies')) return 'dependencies';
-        return label.toLowerCase();
-    });
-}
 
 // ==================== SETTINGS ====================
 function initializeSettings() {
@@ -264,6 +150,9 @@ function loadSettings() {
         if (settings) {
             if (settings.apiKey) {
                 document.getElementById('apiKeyInput').value = settings.apiKey;
+                document.getElementById('onboardingBanner').classList.add('hidden');
+            } else {
+                document.getElementById('onboardingBanner').classList.remove('hidden');
             }
             if (settings.depth) {
                 document.getElementById('depthSelect').value = settings.depth;
@@ -306,6 +195,8 @@ function saveSettings() {
         {action: 'saveSettings', settings: settings},
         () => {
             showMessageInSettings('✅ Settings saved successfully!');
+            // Hide the onboarding banner once the API key is successfully saved
+            document.getElementById('onboardingBanner').classList.add('hidden');
         }
     );
 }

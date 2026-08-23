@@ -8,3 +8,4 @@ build/
 src/.env.local
 .vscode/
 .idea/
+extension.zip

@@ -14,13 +14,17 @@
             <div class="tabs">
                 <button class="tab-btn active" data-tab="analysis">Analysis</button>
                 <button class="tab-btn" data-tab="history">History</button>
-                <button class="tab-btn" data-tab="security">Security</button>
                 <button class="tab-btn" data-tab="settings">Settings</button>
             </div>
         </div>
 
         <!-- Analysis Tab -->
         <div class="tab-content active" id="analysis">
+            <!-- Welcome Onboarding Banner -->
+            <div id="onboardingBanner" class="message hidden" style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.2); color: #93c5fd; margin-bottom: 15px; cursor: pointer; padding: 12px; border-radius: 8px; font-size: 12.5px; line-height: 1.4; transition: background 0.2s;">
+                👋 **Welcome!** To start analyzing code, click here to configure your **Gemini API Key** in the Settings tab first.
+            </div>
+
             <div class="input-section">
                 <textarea 
                     id="codeInput" 
@@ -99,44 +103,6 @@
                     <div class="empty-history" id="emptyHistoryMsg" style="text-align: center; padding: 30px; color: #6b7280; font-style: italic; font-size: 13px;">
                         No review history found. Analyze some code to get started!
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Security Tab -->
-        <div class="tab-content" id="security">
-            <div class="security-section">
-                <h3>🔒 Security Testing</h3>
-                <p class="info-text">Test current website for vulnerabilities</p>
-                
-                <div class="message" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #fca5a5; margin-bottom: 15px; padding: 10px 14px; border-radius: 6px; font-size: 12.5px; font-weight: 500;">
-                    🚧 This module is currently locked and scheduled for a future release.
-                </div>
-                
-                <div class="security-checks" style="opacity: 0.6; pointer-events: none;">
-                    <label class="checkbox">
-                        <input type="checkbox" checked disabled> XSS (Cross-Site Scripting)
-                    </label>
-                    <label class="checkbox">
-                        <input type="checkbox" checked disabled> SQL Injection
-                    </label>
-                    <label class="checkbox">
-                        <input type="checkbox" checked disabled> CSRF (Cross-Site Request Forgery)
-                    </label>
-                    <label class="checkbox">
-                        <input type="checkbox" checked disabled> Missing CSP Headers
-                    </label>
-                    <label class="checkbox">
-                        <input type="checkbox" checked disabled> Insecure Dependencies
-                    </label>
-                </div>
-
-                <button id="securityTestBtn" class="btn btn-secondary" disabled style="opacity: 0.6; cursor: not-allowed; width: 100%;">
-                    🔒 Security Audits Coming Soon
-                </button>
-
-                <div id="securityResults" class="results hidden">
-                    <div id="securityOutput" class="output"></div>
                 </div>
             </div>
         </div>

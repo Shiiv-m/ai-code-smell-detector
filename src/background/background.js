@@ -21,12 +21,6 @@ chrome.runtime.onInstalled.addListener(() => {
         title: '🔍 Analyze with Gemini',
         contexts: ['selection']
     });
-
-    chrome.contextMenus.create({
-        id: 'analyze-page',
-        title: '🔒 Security Test This Page',
-        contexts: ['page']
-    });
 });
 
 // Handle context menu clicks
@@ -45,11 +39,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
                 console.log('chrome.action.openPopup not supported or requires policy.', e);
             }
         }
-    }
-    
-    if (info.menuItemId === 'analyze-page') {
-        // Will implement security testing in Phase 2
-        console.log('Security test triggered');
     }
 });
 
@@ -87,22 +76,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return true;
     }
 
-    if (request.action === 'runSecurityScan') {
-        runSecurityScan(request.domData, request.checks)
-            .then(result => {
-                sendResponse({
-                    success: true,
-                    data: result
-                });
-            })
-            .catch(error => {
-                sendResponse({
-                    success: false,
-                    error: error.message
-                });
-            });
-        return true;
-    }
+
 });
 
 // Simple DJB2 string hashing function
@@ -225,6 +199,10 @@ async function analyzeCodeWithGemini(code, depth = 'normal') {
         
     } catch (error) {
         console.error('Gemini API call failed:', error);
+        // User-friendly network offline alerts
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.message.includes('network')) {
+            throw new Error('🌐 Network offline. Please check your internet connection and try again.');
+        }
         throw error;
     }
 }
@@ -254,73 +232,6 @@ Provide the response in the following structured format using clear headings and
     return basePrompt;
 }
 
-// Perform active website security scan
-async function runSecurityScan(domData, checks) {
-    const localAlerts = [];
-    
-    // 1. SSL/TLS Verification
-    if (domData.protocol === 'http:') {
-        localAlerts.push(`🔴 **[HIGH] Insecure Protocol (HTTP)**: The website is loaded over HTTP. Data transmitted (including credentials and session cookies) is unencrypted and vulnerable to MITM interception.`);
-    }
-    
-    // 2. Client-Side CSP Check
-    if (checks.includes('csp')) {
-        const hasCspMeta = domData.metas.some(m => m.httpEquiv.toLowerCase() === 'content-security-policy');
-        if (!hasCspMeta) {
-            localAlerts.push(`🟡 **[MEDIUM] Missing Client-Side CSP**: No Content-Security-Policy (CSP) header was declared via HTML <meta> tags. Inline scripts and styling injections are not restricted.`);
-        }
-    }
-    
-    // 3. Form CSRF Check
-    if (checks.includes('csrf')) {
-        const postForms = domData.forms.filter(f => f.method.toLowerCase() === 'post');
-        postForms.forEach((form, idx) => {
-            const hasCsrfToken = form.inputs.some(input => {
-                const name = (input.name || '').toLowerCase();
-                const id = (input.id || '').toLowerCase();
-                return name.includes('csrf') || name.includes('token') || name.includes('xsrf') ||
-                       id.includes('csrf') || id.includes('token') || id.includes('xsrf');
-            });
-            
-            if (!hasCsrfToken) {
-                const formAction = form.action ? `submitting to \`${form.action}\`` : 'with unspecified action';
-                localAlerts.push(`🟡 **[MEDIUM] Missing Anti-CSRF Protection (POST Form #${idx + 1})**: Form ${formAction} does not contain common hidden anti-CSRF token inputs (\`_token\`, \`csrf_token\`, etc.).`);
-            }
-        });
-    }
-    
-    // 4. Insecure CDN Dependencies Check
-    if (checks.includes('dependencies')) {
-        const oldJQueryRegex = /(jquery[-@/])(1\.\d+\.\d+|2\.\d+\.\d+|3\.[0-4]\.\d+)/i;
-        domData.scripts.forEach(script => {
-            if (script.src) {
-                const match = script.src.match(oldJQueryRegex);
-                if (match) {
-                    localAlerts.push(`🔴 **[HIGH] Outdated & Vulnerable Dependency**: Page loads outdated jQuery version (\`${match[2]}\`). Versions <3.5.0 contain known Prototype Pollution and Cross-Site Scripting (XSS) vulnerabilities.`);
-                }
-            }
-        });
-    }
-    
-    // 5. Deep AI Security Audit Placeholder
-    const aiAuditReport = `💡 *Gemini AI Security Deep Audit is currently paused and scheduled for a future update.*`;
-    
-    // 6. Assemble Report
-    let report = `# 🔒 Page Security Audit Report\n\n`;
-    report += `**Target URL**: \`${domData.url}\`\n`;
-    report += `**Protocol**: \`${domData.protocol}\`\n\n`;
-    
-    report += `### 🛡️ Passive Signature Scanner Alerts\n`;
-    if (localAlerts.length > 0) {
-        report += localAlerts.map(alert => `• ${alert}`).join('\n') + '\n\n';
-    } else {
-        report += `✅ No immediate signature issues flagged in page protocols, forms, or CDN imports.\n\n`;
-    }
-    
-    report += `### 🤖 Gemini AI Security Deep Audit\n`;
-    report += aiAuditReport;
-    
-    return report;
-}
+
 
 
