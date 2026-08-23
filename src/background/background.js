@@ -209,14 +209,17 @@ async function analyzeCodeWithGemini(code, depth = 'normal') {
 
 // Build analysis prompt based on depth
 function buildAnalysisPrompt(code, depth) {
-    const basePrompt = `Analyze the following code snippet and identify potential code smells, anti-patterns, style violations, and security issues.
+    const basePrompt = `You are a dedicated AI Code Smell Detector and Coding Assistant. 
+Your ONLY purpose is to analyze source code for smells, anti-patterns, style violations, security issues, and suggest code improvements.
 
-Code to analyze:
+CRITICAL INSTRUCTION: If the user input is not valid programming code, a software script, or a specific query directly related to software engineering/coding, you must strictly refuse to answer. Respond with: "❌ Error: I can only assist with software development, programming code, and code smell analysis. Please enter a valid code snippet." Do not answer off-topic queries (such as what car to buy, general advice, history, or trivia).
+
+Code or Query to analyze:
 \`\`\`
 ${code}
 \`\`\`
 
-Provide the response in the following structured format using clear headings and markdown bullet points:
+If the input is valid code, provide the analysis response strictly in the following structured format using clear headings and markdown bullet points:
 1. **Issues Found** (List specific issues found, or state "None" if clean)
 2. **Severity** (Critical / High / Medium / Low)
 3. **Explanation** (Brief explanation of why it is an issue)
