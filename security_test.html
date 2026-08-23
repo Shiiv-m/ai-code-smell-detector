@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insecure Security Test Page</title>
+    <!-- Outdated jQuery with known XSS/Prototype Pollution vulnerabilities -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+    <h1>Insecure Application Sandbox</h1>
+    <p>This page is a local test container for our Chrome extension security scanner.</p>
+
+    <!-- POST form missing CSRF protection tokens -->
+    <form action="http://insecure-endpoint.com/api/login" method="POST">
+        <h3>Login Form (Missing CSRF & Served over HTTP)</h3>
+        <label>Username:</label>
+        <input type="text" name="username">
+        
+        <label>Password:</label>
+        <input type="password" name="password">
+        
+        <button type="submit">Submit Login</button>
+    </form>
+
+    <!-- Direct inline DOM script with potential XSS parameter routing -->
+    <script>
+        // Dangerous sink: direct execution of document.write from search parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref');
+        if (ref) {
+            document.write("Welcome back, referer: " + ref); // Clear XSS Vector
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Smell Detector</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🔍 Code Analyzer</h1>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="analysis">Analysis</button>
+                <button class="tab-btn" data-tab="history">History</button>
+                <button class="tab-btn" data-tab="security">Security</button>
+                <button class="tab-btn" data-tab="settings">Settings</button>
+            </div>
+        </div>
+
+        <!-- Analysis Tab -->
+        <div class="tab-content active" id="analysis">
+            <div class="input-section">
+                <textarea 
+                    id="codeInput" 
+                    placeholder="Paste code here or select text on any website..."
+                    rows="8"
+                ></textarea>
+                <button id="analyzeBtn" class="btn btn-primary">
+                    <span class="loader hidden"></span>
+                    Analyze Code
+                </button>
+            </div>
+
+            <div id="results" class="results hidden">
+                <div class="result-item">
+                    <h3>Analysis Results</h3>
+                    <div id="analysisOutput" class="output"></div>
+                    
+                    <div class="actions">
+                        <button id="copyBtn" class="btn btn-secondary">📋 Copy Analysis</button>
+                        <button id="generateFixBtn" class="btn btn-success">✨ Generate Fix</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="error" class="error hidden"></div>
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Analyzing with Gemini AI...</p>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div class="tab-content" id="history">
+            <div class="history-section">
+                <h3>📊 Code Smell Analytics</h3>
+                
+                <!-- Stats Dashboard Grid -->
+                <div class="stats-grid" style="margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="stat-card" style="background: #111827; border: 1px solid #1f2937; padding: 12px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <span class="stat-value" id="statTotalReviews" style="font-size: 20px; font-weight: 700; color: #3b82f6; display: block;">0</span>
+                        <span class="stat-label" style="font-size: 11px; color: #9ca3af; font-weight: 500;">Total Reviews Run</span>
+                    </div>
+                    <div class="stat-card" style="background: #111827; border: 1px solid #1f2937; padding: 12px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <span class="stat-value" id="statCacheHits" style="font-size: 20px; font-weight: 700; color: #10b981; display: block;">0</span>
+                        <span class="stat-label" style="font-size: 11px; color: #9ca3af; font-weight: 500;">API Calls Saved</span>
+                    </div>
+                </div>
+
+                <!-- Severity Breakdown Cards -->
+                <div class="severity-grid" style="margin-top: 12px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+                    <div class="sev-card critical" style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.15); padding: 8px 4px; border-radius: 6px; text-align: center;">
+                        <span class="sev-value" id="sevCritical" style="color: #ef4444; font-weight: bold; font-size: 14px; display: block;">0</span>
+                        <span class="sev-label" style="font-size: 10px; color: #9ca3af;">Critical</span>
+                    </div>
+                    <div class="sev-card high" style="background: rgba(249, 115, 22, 0.08); border: 1px solid rgba(249, 115, 22, 0.15); padding: 8px 4px; border-radius: 6px; text-align: center;">
+                        <span class="sev-value" id="sevHigh" style="color: #f97316; font-weight: bold; font-size: 14px; display: block;">0</span>
+                        <span class="sev-label" style="font-size: 10px; color: #9ca3af;">High</span>
+                    </div>
+                    <div class="sev-card medium" style="background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(234, 179, 8, 0.15); padding: 8px 4px; border-radius: 6px; text-align: center;">
+                        <span class="sev-value" id="sevMedium" style="color: #eab308; font-weight: bold; font-size: 14px; display: block;">0</span>
+                        <span class="sev-label" style="font-size: 10px; color: #9ca3af;">Medium</span>
+                    </div>
+                    <div class="sev-card low" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); padding: 8px 4px; border-radius: 6px; text-align: center;">
+                        <span class="sev-value" id="sevLow" style="color: #10b981; font-weight: bold; font-size: 14px; display: block;">0</span>
+                        <span class="sev-label" style="font-size: 10px; color: #9ca3af;">Low</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; padding-bottom: 8px;">
+                    <h3 style="font-size: 15px; font-weight: 700;">📜 Recent Reviews</h3>
+                    <button id="clearHistoryBtn" class="btn btn-secondary" style="padding: 4px 10px; margin-top: 0; font-size: 11px;">🗑️ Clear History</button>
+                </div>
+                
+                <!-- History Logs List -->
+                <div id="historyList" class="history-list" style="margin-top: 10px; max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px;">
+                    <div class="empty-history" id="emptyHistoryMsg" style="text-align: center; padding: 30px; color: #6b7280; font-style: italic; font-size: 13px;">
+                        No review history found. Analyze some code to get started!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Tab -->
+        <div class="tab-content" id="security">
+            <div class="security-section">
+                <h3>🔒 Security Testing</h3>
+                <p class="info-text">Test current website for vulnerabilities</p>
+                
+                <div class="message" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #fca5a5; margin-bottom: 15px; padding: 10px 14px; border-radius: 6px; font-size: 12.5px; font-weight: 500;">
+                    🚧 This module is currently locked and scheduled for a future release.
+                </div>
+                
+                <div class="security-checks" style="opacity: 0.6; pointer-events: none;">
+                    <label class="checkbox">
+                        <input type="checkbox" checked disabled> XSS (Cross-Site Scripting)
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" checked disabled> SQL Injection
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" checked disabled> CSRF (Cross-Site Request Forgery)
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" checked disabled> Missing CSP Headers
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" checked disabled> Insecure Dependencies
+                    </label>
+                </div>
+
+                <button id="securityTestBtn" class="btn btn-secondary" disabled style="opacity: 0.6; cursor: not-allowed; width: 100%;">
+                    🔒 Security Audits Coming Soon
+                </button>
+
+                <div id="securityResults" class="results hidden">
+                    <div id="securityOutput" class="output"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="settings">
+            <div class="settings-section">
+                <h3>⚙️ Settings</h3>
+                
+                <div class="setting-group">
+                    <label>Gemini API Key:</label>
+                    <input 
+                        type="password" 
+                        id="apiKeyInput" 
+                        placeholder="Enter your Gemini API key..."
+                        class="input-field"
+                    >
+                    <small>Your key is stored locally in chrome.storage.local and never sent to third-party servers.</small>
+                </div>
+
+                <div class="setting-group">
+                    <label>Analysis Depth:</label>
+                    <select id="depthSelect" class="input-field">
+                        <option value="quick">Quick (faster)</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="deep">Deep (slower)</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="autoAnalyzeCheck">
+                        Auto-analyze selected text
+                    </label>
+                </div>
+
+                <button id="saveSettingsBtn" class="btn btn-primary">💾 Save Settings</button>
+                <div id="settingsMessage" class="message hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

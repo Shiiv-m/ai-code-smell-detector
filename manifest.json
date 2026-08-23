@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "AI Code Smell Detector",
+  "version": "1.0.0",
+  "description": "Detect code smells and security issues using AI. Right-click on code to analyze.",
+  "permissions": [
+    "scripting",
+    "activeTab",
+    "tabs",
+    "contextMenus",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://github.com/*",
+    "https://*/*",
+    "https://generativelanguage.googleapis.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background/background.js"
+  },
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "AI Code Smell Detector",
+    "default_icons": {
+      "16": "src/icons/icon-16.png",
+      "48": "src/icons/icon-48.png",
+      "128": "src/icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "src/icons/icon-16.png",
+    "48": "src/icons/icon-48.png",
+    "128": "src/icons/icon-128.png",
+    "256": "src/icons/icon-256.png"
+  }
+}
