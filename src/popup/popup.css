@@ -1,3 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Fira+Code:wght@400;500;700&display=swap');
+
+body.theme-retro {
+    --bg-color: #f4ece1;
+    --text-color: #3e3a35;
+    --header-bg: linear-gradient(135deg, #bfdbfe 0%, #e9d5ff 100%);
+    --header-text: #2d2d2d;
+    --tab-btn-bg: rgba(0, 0, 0, 0.05);
+    --tab-btn-text: #4b5563;
+    --tab-btn-active-bg: #818cf8;
+    --tab-btn-active-text: #ffffff;
+    --input-bg: #faf7f2;
+    --input-border: #8c857b;
+    --input-text: #2d2d2d;
+    --btn-primary: #818cf8;
+    --btn-primary-hover: #4f46e5;
+    --btn-primary-text: #ffffff;
+    --btn-secondary: #e5e0d8;
+    --btn-secondary-hover: #d5cfc5;
+    --btn-secondary-text: #4b5563;
+    --card-bg: #fffbf5;
+    --border-color: #8c857b;
+    --output-bg: #faf7f2;
+    --output-text: #2d2d2d;
+    --font-static: 'VT323', monospace;
+    --font-dynamic: 'Fira Code', monospace;
+}
+
+body.theme-orange {
+    --bg-color: #0c0a09;
+    --text-color: #f5f5f4;
+    --header-bg: linear-gradient(135deg, #1c1917 0%, #292524 100%);
+    --header-text: #ea580c;
+    --tab-btn-bg: rgba(234, 88, 12, 0.1);
+    --tab-btn-text: #a8a29e;
+    --tab-btn-active-bg: #ea580c;
+    --tab-btn-active-text: #ffffff;
+    --input-bg: #1c1917;
+    --input-border: #ea580c;
+    --input-text: #f5f5f4;
+    --btn-primary: #ea580c;
+    --btn-primary-hover: #b45309;
+    --btn-primary-text: #ffffff;
+    --btn-secondary: #292524;
+    --btn-secondary-hover: #44403c;
+    --btn-secondary-text: #d6d3d1;
+    --card-bg: #1c1917;
+    --border-color: #ea580c;
+    --output-bg: #0c0a09;
+    --output-text: #ea580c;
+    --font-static: 'VT323', monospace;
+    --font-dynamic: 'Fira Code', monospace;
+}
+
+body.theme-green {
+    --bg-color: #000000;
+    --text-color: #33ff33;
+    --header-bg: linear-gradient(135deg, #050c05 0%, #0c180c 100%);
+    --header-text: #00ff00;
+    --tab-btn-bg: rgba(0, 255, 0, 0.1);
+    --tab-btn-text: #22c55e;
+    --tab-btn-active-bg: #00ff00;
+    --tab-btn-active-text: #000000;
+    --input-bg: #050c05;
+    --input-border: #00ff00;
+    --input-text: #33ff33;
+    --btn-primary: #00ff00;
+    --btn-primary-hover: #16a34a;
+    --btn-primary-text: #000000;
+    --btn-secondary: #0c180c;
+    --btn-secondary-hover: #15803d;
+    --btn-secondary-text: #33ff33;
+    --card-bg: #050c05;
+    --border-color: #00ff00;
+    --output-bg: #000000;
+    --output-text: #33ff33;
+    --font-static: 'VT323', monospace;
+    --font-dynamic: 'Fira Code', monospace;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,12 +85,14 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #090d16;
-    color: #f1f5f9;
+    font-family: var(--font-static);
+    font-size: 16px;
+    background: var(--bg-color);
+    color: var(--text-color);
     width: 600px;
-    min-height: 420px;
+    min-height: 440px;
     overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
 }
 
 .container {
@@ -21,21 +103,20 @@ body {
 
 /* Header & Tabs */
 .header {
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    background: var(--header-bg);
     padding: 18px 20px;
-    color: white;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    border-bottom: 2px solid var(--border-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
-    font-size: 20px;
+    font-size: 26px;
     margin-bottom: 14px;
     font-weight: 700;
-    letter-spacing: -0.5px;
     display: flex;
     align-items: center;
     gap: 8px;
+    color: var(--header-text);
 }
 
 .tabs {
@@ -45,26 +126,25 @@ body {
 }
 
 .tab-btn {
-    padding: 8px 16px;
-    background: rgba(255, 255, 255, 0.08);
-    border: none;
-    border-radius: 20px;
-    color: rgba(255, 255, 255, 0.75);
+    font-family: var(--font-static);
+    padding: 6px 14px;
+    background: var(--tab-btn-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--tab-btn-text);
     cursor: pointer;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s ease;
 }
 
 .tab-btn.active {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    color: var(--tab-btn-active-text);
+    background: var(--tab-btn-active-bg);
 }
 
 .tab-btn:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.18);
+    filter: brightness(1.1);
 }
 
 /* Tab Content */
@@ -88,22 +168,22 @@ body {
 /* Textarea & Inputs */
 textarea, input[type="text"], input[type="password"], select {
     width: 100%;
-    padding: 12px;
+    padding: 10px 12px;
     margin: 8px 0;
-    background: #111827;
-    border: 1px solid #374151;
-    color: #f3f4f6;
-    border-radius: 8px;
-    font-family: 'Fira Code', 'Monaco', 'Courier New', monospace;
-    font-size: 12.5px;
+    background: var(--input-bg);
+    border: 2px solid var(--input-border);
+    color: var(--input-text);
+    border-radius: 6px;
+    font-family: var(--font-dynamic);
+    font-size: 13px;
     resize: vertical;
     transition: all 0.2s ease;
 }
 
 textarea:focus, input:focus, select:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    filter: brightness(1.05);
+    box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.25);
 }
 
 textarea {
@@ -112,61 +192,38 @@ textarea {
 
 /* Buttons */
 .btn {
-    padding: 10px 18px;
-    border: none;
-    border-radius: 8px;
+    font-family: var(--font-static);
+    padding: 8px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
-    font-size: 13px;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 16px;
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     margin-top: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary {
-    background: #3b82f6;
-    color: white;
+    background: var(--btn-primary);
+    color: var(--btn-primary-text);
 }
 
 .btn-primary:hover {
-    background: #2563eb;
+    background: var(--btn-primary-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .btn-secondary {
-    background: #374151;
-    color: #f3f4f6;
+    background: var(--btn-secondary);
+    color: var(--btn-secondary-text);
 }
 
 .btn-secondary:hover {
-    background: #4b5563;
-}
-
-.btn-success {
-    background: #10b981;
-    color: white;
-}
-
-.btn-success:hover {
-    background: #059669;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-.btn-danger {
-    background: #ef4444;
-    color: white;
-}
-
-.btn-danger:hover {
-    background: #dc2626;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    background: var(--btn-secondary-hover);
 }
 
 .btn:active {
@@ -177,10 +234,9 @@ textarea {
 .results {
     margin-top: 18px;
     padding: 16px;
-    background: #111827;
-    border-left: 4px solid #8b5cf6;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .results.hidden {
@@ -188,25 +244,24 @@ textarea {
 }
 
 .result-item h3 {
-    color: #8b5cf6;
     margin-bottom: 12px;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 700;
 }
 
 .output {
-    background: #090d16;
+    background: var(--output-bg);
     padding: 14px;
     border-radius: 6px;
-    font-family: 'Fira Code', 'Monaco', monospace;
-    font-size: 12px;
+    font-family: var(--font-dynamic);
+    font-size: 13px;
     max-height: 320px;
     overflow-y: auto;
     line-height: 1.6;
     white-space: pre-wrap;
     word-break: break-word;
-    border: 1px solid #1f2937;
-    color: #e2e8f0;
+    border: 2px solid var(--border-color);
+    color: var(--output-text);
 }
 
 .actions {
@@ -219,11 +274,11 @@ textarea {
 .error {
     margin-top: 18px;
     padding: 12px 16px;
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #fca5a5;
-    border-radius: 8px;
-    font-size: 13px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 2px solid #ef4444;
+    color: #ef4444;
+    border-radius: 6px;
+    font-size: 14px;
     font-weight: 500;
 }
 
@@ -248,10 +303,10 @@ textarea {
 .spinner {
     width: 36px;
     height: 36px;
-    border: 3px solid #1f2937;
-    border-top-color: #3b82f6;
+    border: 4px solid var(--border-color);
+    border-top-color: transparent;
     border-radius: 50%;
-    animation: spin 0.8s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
@@ -270,8 +325,7 @@ textarea {
 .setting-group label {
     display: block;
     margin-bottom: 6px;
-    color: #9ca3af;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
 }
 
@@ -279,8 +333,9 @@ textarea {
     display: block;
     margin-top: 4px;
     color: #6b7280;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.4;
+    font-family: var(--font-dynamic);
 }
 
 .checkbox {
@@ -289,8 +344,7 @@ textarea {
     gap: 10px;
     margin-bottom: 12px;
     cursor: pointer;
-    font-size: 13px;
-    color: #d1d5db;
+    font-size: 16px;
     user-select: none;
 }
 
@@ -298,18 +352,16 @@ textarea {
     width: 16px;
     height: 16px;
     cursor: pointer;
-    accent-color: #3b82f6;
+    accent-color: var(--accent-color);
 }
 
 /* Message */
 .message {
     margin-top: 14px;
     padding: 10px 14px;
-    background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    color: #a7f3d0;
+    border: 2px solid var(--border-color);
     border-radius: 6px;
-    font-size: 12.5px;
+    font-size: 14px;
     font-weight: 500;
 }
 
@@ -328,14 +380,10 @@ textarea {
 }
 
 ::-webkit-scrollbar-track {
-    background: #090d16;
+    background: var(--bg-color);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #1f2937;
+    background: var(--border-color);
     border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #374151;
 }

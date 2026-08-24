@@ -157,6 +157,11 @@ function loadSettings() {
             if (settings.depth) {
                 document.getElementById('depthSelect').value = settings.depth;
             }
+            // Load and apply theme selection
+            const theme = settings.theme || 'retro';
+            document.getElementById('themeSelect').value = theme;
+            document.body.className = `theme-${theme}`;
+
             if (settings.autoAnalyze) {
                 document.getElementById('autoAnalyzeCheck').checked = settings.autoAnalyze;
             }
@@ -183,6 +188,7 @@ function saveSettings() {
     const settings = {
         apiKey: document.getElementById('apiKeyInput').value.trim(),
         depth: document.getElementById('depthSelect').value,
+        theme: document.getElementById('themeSelect').value,
         autoAnalyze: document.getElementById('autoAnalyzeCheck').checked
     };
     
@@ -195,6 +201,8 @@ function saveSettings() {
         {action: 'saveSettings', settings: settings},
         () => {
             showMessageInSettings('✅ Settings saved successfully!');
+            // Apply selected theme dynamically
+            document.body.className = `theme-${settings.theme}`;
             // Hide the onboarding banner once the API key is successfully saved
             document.getElementById('onboardingBanner').classList.add('hidden');
         }
