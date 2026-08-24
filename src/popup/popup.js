@@ -52,6 +52,7 @@ function initializeButtons() {
         if (val === 'analyze') analyzeBtn.textContent = 'Analyze Code';
         else if (val === 'compile') analyzeBtn.textContent = 'Verify Code';
         else if (val === 'explain') analyzeBtn.textContent = 'Explain Code';
+        else if (val === 'understand') analyzeBtn.textContent = 'Understand Code';
     });
 
     // Redirect onboarding clicks to Settings tab

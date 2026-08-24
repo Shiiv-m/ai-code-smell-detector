@@ -30,8 +30,8 @@
         <!-- Analysis Tab -->
         <div class="tab-content active" id="analysis">
             <!-- Welcome Onboarding Banner -->
-            <div id="onboardingBanner" class="message hidden" style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.2); color: #93c5fd; margin-bottom: 15px; cursor: pointer; padding: 12px; border-radius: 8px; font-size: 12.5px; line-height: 1.4; transition: background 0.2s;">
-                **Welcome!** Click here to configure your **Gemini API Key** in the Settings tab to begin.
+            <div id="onboardingBanner" class="message hidden" style="background: var(--banner-bg); border: 2px solid var(--banner-border); color: var(--banner-text); margin-bottom: 15px; cursor: pointer; padding: 12px; border-radius: 8px; font-size: 14px; line-height: 1.4; transition: background 0.2s;">
+                <strong>Welcome!</strong> Click here to configure your <strong>Gemini API Key</strong> in the Settings tab to begin.
             </div>
 
             <div class="input-section">
@@ -45,6 +45,7 @@
                         <option value="analyze" selected>Check Improvements</option>
                         <option value="compile">Verify & Syntax Check</option>
                         <option value="explain">Generate Explanation</option>
+                        <option value="understand">Understand Code</option>
                     </select>
                     <button id="analyzeBtn" class="btn btn-primary" style="margin: 0; flex: 1.2; height: 38px; white-space: nowrap; justify-content: center; font-size: 16px;">
                         Analyze Code

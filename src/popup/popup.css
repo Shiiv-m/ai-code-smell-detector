@@ -26,6 +26,9 @@ body.theme-retro {
     --font-dynamic: 'Fira Code', monospace;
     --glow-shadow: none;
     --glow-box: none;
+    --banner-bg: rgba(124, 111, 94, 0.08);
+    --banner-border: rgba(124, 111, 94, 0.25);
+    --banner-text: #5d5346;
 }
 
 body.theme-orange {
@@ -54,6 +57,9 @@ body.theme-orange {
     --font-dynamic: 'Fira Code', monospace;
     --glow-shadow: 0 0 8px rgba(255, 85, 0, 0.5);
     --glow-box: 0 0 10px rgba(255, 85, 0, 0.25);
+    --banner-bg: rgba(255, 85, 0, 0.08);
+    --banner-border: rgba(255, 85, 0, 0.25);
+    --banner-text: #ffaa66;
 }
 
 body.theme-green {
@@ -82,6 +88,9 @@ body.theme-green {
     --font-dynamic: 'Fira Code', monospace;
     --glow-shadow: 0 0 8px rgba(0, 255, 102, 0.5);
     --glow-box: 0 0 10px rgba(0, 255, 102, 0.25);
+    --banner-bg: rgba(0, 255, 102, 0.08);
+    --banner-border: rgba(0, 255, 102, 0.25);
+    --banner-text: #66ffaa;
 }
 
 * {
@@ -123,7 +132,6 @@ body {
     align-items: center;
     gap: 8px;
     color: var(--header-text);
-    text-shadow: var(--glow-shadow);
 }
 
 .tabs {
