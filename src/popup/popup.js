@@ -39,21 +39,24 @@ function initializeButtons() {
     const generateFixBtn = document.getElementById('generateFixBtn');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
     const onboardingBanner = document.getElementById('onboardingBanner');
+    const actionSelect = document.getElementById('actionSelect');
     
     analyzeBtn.addEventListener('click', analyzeCode);
     copyBtn.addEventListener('click', copyAnalysis);
     generateFixBtn.addEventListener('click', generateFix);
     clearHistoryBtn.addEventListener('click', clearHistory);
     
+    // Change action button label dynamically
+    actionSelect.addEventListener('change', () => {
+        const val = actionSelect.value;
+        if (val === 'analyze') analyzeBtn.textContent = 'Analyze Code';
+        else if (val === 'compile') analyzeBtn.textContent = 'Verify Code';
+        else if (val === 'explain') analyzeBtn.textContent = 'Explain Code';
+    });
+
     // Redirect onboarding clicks to Settings tab
     onboardingBanner.addEventListener('click', () => {
         document.querySelector('[data-tab="settings"]').click();
-    });
-    onboardingBanner.addEventListener('mouseenter', () => {
-        onboardingBanner.style.background = 'rgba(59, 130, 246, 0.15)';
-    });
-    onboardingBanner.addEventListener('mouseleave', () => {
-        onboardingBanner.style.background = 'rgba(59, 130, 246, 0.08)';
     });
     
     // Enter key to analyze
@@ -79,13 +82,15 @@ async function analyzeCode() {
     
     try {
         const {depth} = await chrome.storage.local.get('depth');
+        const task = document.getElementById('actionSelect').value;
         
         // Send message to background.js
         chrome.runtime.sendMessage(
             {
                 action: 'analyzeCode',
                 code: code,
-                depth: depth || 'normal'
+                depth: depth || 'normal',
+                task: task
             },
             (response) => {
                 showLoading(false);
@@ -106,7 +111,7 @@ async function analyzeCode() {
 
 function displayResults(analysis) {
     const output = document.getElementById('analysisOutput');
-    output.textContent = analysis;
+    output.innerHTML = parseMarkdown(analysis);
     document.getElementById('results').classList.remove('hidden');
     
     // Store for later use
@@ -353,4 +358,28 @@ function clearHistory() {
             loadHistoryAndStats();
         });
     }
+}
+
+// Markdown parser helper to remove raw double asterisks and format code outputs
+function parseMarkdown(text) {
+    if (!text) return '';
+    
+    // Escape HTML to prevent injection
+    let html = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+        
+    // Parse Bold: **text** -> <strong>text</strong>
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+    // Parse Headers: ### or ## -> styled headers with bottom border
+    html = html.replace(/^### (.*?)$/gm, '<div style="margin-top: 14px; margin-bottom: 6px; font-weight: 700; font-size: 16px; border-bottom: 1.5px solid var(--border-color); padding-bottom: 3px; text-shadow: var(--glow-shadow);">$1</div>');
+    html = html.replace(/^## (.*?)$/gm, '<div style="margin-top: 18px; margin-bottom: 8px; font-weight: 700; font-size: 18px; border-bottom: 1.5px solid var(--border-color); padding-bottom: 3px; text-shadow: var(--glow-shadow);">$1</div>');
+    
+    // Parse Bullet lists: * or - or • -> styled inline block elements
+    html = html.replace(/^• (.*?)$/gm, '<div style="margin-left: 8px; margin-bottom: 6px; line-height: 1.5; display: flex; gap: 6px;"><span style="color: var(--accent-color); font-weight: bold;">&gt;</span><span>$1</span></div>');
+    html = html.replace(/^[\*-] (.*?)$/gm, '<div style="margin-left: 8px; margin-bottom: 6px; line-height: 1.5; display: flex; gap: 6px;"><span style="color: var(--accent-color); font-weight: bold;">&gt;</span><span>$1</span></div>');
+    
+    return html;
 }

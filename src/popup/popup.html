@@ -10,11 +10,20 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>🔍 Code Analyzer</h1>
+            <h1>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align: middle; margin-right: 4px; margin-top: -3px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Code Analyzer
+            </h1>
             <div class="tabs">
-                <button class="tab-btn active" data-tab="analysis">Analysis</button>
-                <button class="tab-btn" data-tab="history">History</button>
-                <button class="tab-btn" data-tab="settings">Settings</button>
+                <button class="tab-btn active" data-tab="analysis">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align: middle; margin-right: 4px; margin-top: -2px;"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Analysis
+                </button>
+                <button class="tab-btn" data-tab="history">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align: middle; margin-right: 4px; margin-top: -2px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>History
+                </button>
+                <button class="tab-btn" data-tab="settings">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align: middle; margin-right: 4px; margin-top: -2px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings
+                </button>
             </div>
         </div>
 
@@ -22,7 +31,7 @@
         <div class="tab-content active" id="analysis">
             <!-- Welcome Onboarding Banner -->
             <div id="onboardingBanner" class="message hidden" style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.2); color: #93c5fd; margin-bottom: 15px; cursor: pointer; padding: 12px; border-radius: 8px; font-size: 12.5px; line-height: 1.4; transition: background 0.2s;">
-                👋 **Welcome!** To start analyzing code, click here to configure your **Gemini API Key** in the Settings tab first.
+                **Welcome!** Click here to configure your **Gemini API Key** in the Settings tab to begin.
             </div>
 
             <div class="input-section">
@@ -31,10 +40,16 @@
                     placeholder="Paste code here or select text on any website..."
                     rows="8"
                 ></textarea>
-                <button id="analyzeBtn" class="btn btn-primary">
-                    <span class="loader hidden"></span>
-                    Analyze Code
-                </button>
+                <div class="action-bar" style="display: flex; gap: 8px; margin-top: 10px; width: 100%;">
+                    <select id="actionSelect" class="input-field" style="margin: 0; flex: 1.8; height: 38px; padding: 6px 12px; font-family: var(--font-static); font-size: 16px; font-weight: 600;">
+                        <option value="analyze" selected>Check Improvements</option>
+                        <option value="compile">Verify & Syntax Check</option>
+                        <option value="explain">Generate Explanation</option>
+                    </select>
+                    <button id="analyzeBtn" class="btn btn-primary" style="margin: 0; flex: 1.2; height: 38px; white-space: nowrap; justify-content: center; font-size: 16px;">
+                        Analyze Code
+                    </button>
+                </div>
             </div>
 
             <div id="results" class="results hidden">
@@ -43,8 +58,8 @@
                     <div id="analysisOutput" class="output"></div>
                     
                     <div class="actions">
-                        <button id="copyBtn" class="btn btn-secondary">📋 Copy Analysis</button>
-                        <button id="generateFixBtn" class="btn btn-success">✨ Generate Fix</button>
+                        <button id="copyBtn" class="btn btn-secondary">Copy Analysis</button>
+                        <button id="generateFixBtn" class="btn btn-success">Generate Fix</button>
                     </div>
                 </div>
             </div>
@@ -59,7 +74,7 @@
         <!-- History Tab -->
         <div class="tab-content" id="history">
             <div class="history-section">
-                <h3>📊 Code Smell Analytics</h3>
+                <h3>Code Smell Analytics</h3>
                 
                 <!-- Stats Dashboard Grid -->
                 <div class="stats-grid" style="margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -93,9 +108,9 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; padding-bottom: 8px;">
-                    <h3 style="font-size: 15px; font-weight: 700;">📜 Recent Reviews</h3>
-                    <button id="clearHistoryBtn" class="btn btn-secondary" style="padding: 4px 10px; margin-top: 0; font-size: 11px;">🗑️ Clear History</button>
+                <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                    <h3 style="font-size: 18px; font-weight: 700;">Recent Reviews</h3>
+                    <button id="clearHistoryBtn" class="btn btn-secondary" style="padding: 4px 10px; margin-top: 0; font-size: 14px;">Clear History</button>
                 </div>
                 
                 <!-- History Logs List -->
@@ -107,10 +122,9 @@
             </div>
         </div>
 
-        <!-- Settings Tab -->
         <div class="tab-content" id="settings">
             <div class="settings-section">
-                <h3>⚙️ Settings</h3>
+                <h3>Settings</h3>
                 
                 <div class="setting-group">
                     <label>Gemini API Key:</label>
@@ -135,9 +149,9 @@
                 <div class="setting-group">
                     <label>App Theme Selection:</label>
                     <select id="themeSelect" class="input-field">
-                        <option value="retro" selected>Retro Cream 🍦</option>
-                        <option value="orange">Cyber Orange 🍊</option>
-                        <option value="green">Matrix Green 🟩</option>
+                        <option value="retro" selected>Retro Cream</option>
+                        <option value="orange">Cyber Orange</option>
+                        <option value="green">Matrix Green</option>
                     </select>
                 </div>
 
@@ -148,7 +162,7 @@
                     </label>
                 </div>
 
-                <button id="saveSettingsBtn" class="btn btn-primary">💾 Save Settings</button>
+                <button id="saveSettingsBtn" class="btn btn-primary">Save Settings</button>
                 <div id="settingsMessage" class="message hidden"></div>
             </div>
         </div>

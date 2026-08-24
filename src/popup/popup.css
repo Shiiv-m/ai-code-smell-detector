@@ -3,79 +3,85 @@
 body.theme-retro {
     --bg-color: #f4ece1;
     --text-color: #3e3a35;
-    --header-bg: linear-gradient(135deg, #bfdbfe 0%, #e9d5ff 100%);
-    --header-text: #2d2d2d;
+    --header-bg: linear-gradient(135deg, #FAF7F2 0%, #e8e1d5 100%);
+    --header-text: #3e362e;
     --tab-btn-bg: rgba(0, 0, 0, 0.05);
-    --tab-btn-text: #4b5563;
-    --tab-btn-active-bg: #818cf8;
+    --tab-btn-text: #7c6f5e;
+    --tab-btn-active-bg: #7c6f5e;
     --tab-btn-active-text: #ffffff;
     --input-bg: #faf7f2;
-    --input-border: #8c857b;
+    --input-border: #7c6f5e;
     --input-text: #2d2d2d;
-    --btn-primary: #818cf8;
-    --btn-primary-hover: #4f46e5;
+    --btn-primary: #7c6f5e;
+    --btn-primary-hover: #5d5346;
     --btn-primary-text: #ffffff;
     --btn-secondary: #e5e0d8;
     --btn-secondary-hover: #d5cfc5;
     --btn-secondary-text: #4b5563;
     --card-bg: #fffbf5;
-    --border-color: #8c857b;
+    --border-color: #7c6f5e;
     --output-bg: #faf7f2;
     --output-text: #2d2d2d;
     --font-static: 'VT323', monospace;
     --font-dynamic: 'Fira Code', monospace;
+    --glow-shadow: none;
+    --glow-box: none;
 }
 
 body.theme-orange {
-    --bg-color: #0c0a09;
-    --text-color: #f5f5f4;
-    --header-bg: linear-gradient(135deg, #1c1917 0%, #292524 100%);
-    --header-text: #ea580c;
-    --tab-btn-bg: rgba(234, 88, 12, 0.1);
-    --tab-btn-text: #a8a29e;
-    --tab-btn-active-bg: #ea580c;
+    --bg-color: #0b0b0a;
+    --text-color: #ffd6b3;
+    --header-bg: linear-gradient(135deg, #151413 0%, #1e1d1b 100%);
+    --header-text: #ff5500;
+    --tab-btn-bg: rgba(255, 85, 0, 0.05);
+    --tab-btn-text: #d6d3d1;
+    --tab-btn-active-bg: #ff5500;
     --tab-btn-active-text: #ffffff;
-    --input-bg: #1c1917;
-    --input-border: #ea580c;
-    --input-text: #f5f5f4;
-    --btn-primary: #ea580c;
-    --btn-primary-hover: #b45309;
+    --input-bg: #151413;
+    --input-border: #ff5500;
+    --input-text: #ffd6b3;
+    --btn-primary: #ff5500;
+    --btn-primary-hover: #e04400;
     --btn-primary-text: #ffffff;
     --btn-secondary: #292524;
     --btn-secondary-hover: #44403c;
-    --btn-secondary-text: #d6d3d1;
-    --card-bg: #1c1917;
-    --border-color: #ea580c;
-    --output-bg: #0c0a09;
-    --output-text: #ea580c;
+    --btn-secondary-text: #ffe4d6;
+    --card-bg: #151413;
+    --border-color: #ff5500;
+    --output-bg: #0b0b0a;
+    --output-text: #ff8833;
     --font-static: 'VT323', monospace;
     --font-dynamic: 'Fira Code', monospace;
+    --glow-shadow: 0 0 8px rgba(255, 85, 0, 0.5);
+    --glow-box: 0 0 10px rgba(255, 85, 0, 0.25);
 }
 
 body.theme-green {
-    --bg-color: #000000;
-    --text-color: #33ff33;
-    --header-bg: linear-gradient(135deg, #050c05 0%, #0c180c 100%);
-    --header-text: #00ff00;
-    --tab-btn-bg: rgba(0, 255, 0, 0.1);
-    --tab-btn-text: #22c55e;
-    --tab-btn-active-bg: #00ff00;
-    --tab-btn-active-text: #000000;
-    --input-bg: #050c05;
-    --input-border: #00ff00;
-    --input-text: #33ff33;
-    --btn-primary: #00ff00;
-    --btn-primary-hover: #16a34a;
-    --btn-primary-text: #000000;
-    --btn-secondary: #0c180c;
-    --btn-secondary-hover: #15803d;
-    --btn-secondary-text: #33ff33;
-    --card-bg: #050c05;
-    --border-color: #00ff00;
-    --output-bg: #000000;
-    --output-text: #33ff33;
+    --bg-color: #070a0e;
+    --text-color: #ccffd6;
+    --header-bg: linear-gradient(135deg, #0e1620 0%, #152232 100%);
+    --header-text: #00ff66;
+    --tab-btn-bg: rgba(0, 255, 102, 0.05);
+    --tab-btn-text: #94a3b8;
+    --tab-btn-active-bg: #00ff66;
+    --tab-btn-active-text: #070a0e;
+    --input-bg: #0e1620;
+    --input-border: #00ff66;
+    --input-text: #ccffd6;
+    --btn-primary: #00ff66;
+    --btn-primary-hover: #00d655;
+    --btn-primary-text: #070a0e;
+    --btn-secondary: #152232;
+    --btn-secondary-hover: #1e3149;
+    --btn-secondary-text: #94a3b8;
+    --card-bg: #0e1620;
+    --border-color: #00ff66;
+    --output-bg: #070a0e;
+    --output-text: #00ff66;
     --font-static: 'VT323', monospace;
     --font-dynamic: 'Fira Code', monospace;
+    --glow-shadow: 0 0 8px rgba(0, 255, 102, 0.5);
+    --glow-box: 0 0 10px rgba(0, 255, 102, 0.25);
 }
 
 * {
@@ -117,6 +123,7 @@ body {
     align-items: center;
     gap: 8px;
     color: var(--header-text);
+    text-shadow: var(--glow-shadow);
 }
 
 .tabs {
@@ -136,11 +143,14 @@ body {
     font-size: 16px;
     font-weight: 600;
     transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
 }
 
 .tab-btn.active {
     color: var(--tab-btn-active-text);
     background: var(--tab-btn-active-bg);
+    box-shadow: var(--glow-box);
 }
 
 .tab-btn:hover {
@@ -183,7 +193,7 @@ textarea, input[type="text"], input[type="password"], select {
 textarea:focus, input:focus, select:focus {
     outline: none;
     filter: brightness(1.05);
-    box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.25);
+    box-shadow: var(--glow-box);
 }
 
 textarea {
@@ -210,11 +220,13 @@ textarea {
 .btn-primary {
     background: var(--btn-primary);
     color: var(--btn-primary-text);
+    box-shadow: var(--glow-box);
 }
 
 .btn-primary:hover {
     background: var(--btn-primary-hover);
     transform: translateY(-1px);
+    box-shadow: var(--glow-box);
 }
 
 .btn-secondary {
@@ -237,6 +249,7 @@ textarea {
     background: var(--card-bg);
     border: 2px solid var(--border-color);
     border-radius: 8px;
+    box-shadow: var(--glow-box);
 }
 
 .results.hidden {
@@ -247,6 +260,8 @@ textarea {
     margin-bottom: 12px;
     font-size: 20px;
     font-weight: 700;
+    color: var(--accent-color);
+    text-shadow: var(--glow-shadow);
 }
 
 .output {
@@ -307,6 +322,7 @@ textarea {
     border-top-color: transparent;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
+    box-shadow: var(--glow-box);
 }
 
 @keyframes spin {
