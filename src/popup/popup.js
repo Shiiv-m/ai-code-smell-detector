@@ -129,17 +129,29 @@ function copyAnalysis() {
 
 function generateFix() {
     if (window.lastAnalysis) {
-        const fixPrompt = `Based on this analysis:\n\n${window.lastAnalysis}\n\nProvide:\n1. A corrected version of the code\n2. Explanation of changes\n3. How to test the fix`;
+        const codeInput = document.getElementById('codeInput');
+        const originalCode = codeInput.value.trim();
         
-        document.getElementById('codeInput').value = fixPrompt;
+        showLoading(true);
+        hideResults();
+        hideError();
         
-        const analyzeBtn = document.getElementById('analyzeBtn');
-        const originalText = analyzeBtn.textContent;
-        analyzeBtn.textContent = '🔧 Generate Fix';
-        
-        setTimeout(() => {
-            analyzeBtn.textContent = originalText;
-        }, 2000);
+        chrome.runtime.sendMessage(
+            {
+                action: 'analyzeCode',
+                code: `Original Code:\n\`\`\`\n${originalCode}\n\`\`\`\n\nAnalysis:\n${window.lastAnalysis}`,
+                depth: 'normal',
+                task: 'fix'
+            },
+            (response) => {
+                showLoading(false);
+                if (response && response.success) {
+                    displayResults(response.data);
+                } else {
+                    showError((response && response.error) || 'Fix generation failed.');
+                }
+            }
+        );
     }
 }
 
@@ -206,7 +218,7 @@ function saveSettings() {
     chrome.runtime.sendMessage(
         {action: 'saveSettings', settings: settings},
         () => {
-            showMessageInSettings('✅ Settings saved successfully!');
+            showMessageInSettings('Settings saved successfully!');
             // Apply selected theme dynamically
             document.body.className = `theme-${settings.theme}`;
             // Hide the onboarding banner once the API key is successfully saved
@@ -222,13 +234,13 @@ function showLoading(show) {
 
 function showError(message) {
     const error = document.getElementById('error');
-    error.textContent = '❌ ' + message;
+    error.textContent = 'Error: ' + message;
     error.classList.remove('hidden');
 }
 
 function showErrorInSettings(message) {
     const msgDiv = document.getElementById('settingsMessage');
-    msgDiv.textContent = '❌ ' + message;
+    msgDiv.textContent = 'Error: ' + message;
     msgDiv.className = 'message error-message';
     msgDiv.classList.remove('hidden');
     setTimeout(() => msgDiv.classList.add('hidden'), 3000);
