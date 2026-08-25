@@ -32,7 +32,7 @@ Designed for developers reviewing pull requests on GitHub, browsing answers on S
 
 ---
 
-## 💼 Why This Project Stands Out (For Recruiters)
+## 💼 Why This Project Stands Out
 
 *   **Manifest V3 Standard**: Complies with modern Chrome Security policies using background service workers (`src/background/background.js`) rather than legacy persistent background scripts.
 *   **Optimized Build Pipeline**: Configured with a zero-transpiler Webpack layout. Outputs raw native ES6 modules, decreasing final service worker bundle size by 50% and preventing generator crashes.
